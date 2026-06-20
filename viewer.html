@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全景查看器</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="vendor/pannellum.css">
+    <link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+    <!-- ========== 全景容器 ========== -->
+    <div id="viewer-wrap">
+        <div id="panorama"></div>
+        <div id="vr-second"></div>
+    </div>
+    <div class="vignette"></div>
+
+    <!-- ========== 顶部栏 ========== -->
+    <header class="topbar">
+        <div class="brand">
+            <a href="/" class="home-link" title="返回首页">←</a>
+            <span class="dot"></span>
+            <span id="scene-title">加载中...</span>
+        </div>
+        <nav class="top-actions">
+            <button id="btn-filter" class="tbtn" title="切换 我的 / 演示">🖼 我的</button>
+            <button id="btn-share" class="tbtn">🔗 分享</button>
+            <button id="btn-bookmark" class="tbtn">🔖 书签</button>
+            <button id="btn-edit" class="tbtn">📍 编辑热点</button>
+            <button id="btn-initial" class="tbtn" title="将当前视角设为该场景的初始视角">🎯 默认视角</button>
+            <button id="btn-tour" class="tbtn">🎬 导览</button>
+        </nav>
+        <button id="menu-toggle" class="menu-toggle" title="菜单">⋮</button>
+    </header>
+
+    <!-- ========== 画廊侧栏 ========== -->
+    <div id="gallery-backdrop" class="gallery-backdrop"></div>
+    <aside id="gallery" class="gallery">
+        <div class="gallery-head">
+            <span>全景图</span>
+            <div class="gallery-head-btns">
+                <button id="gallery-add" title="添加全景图（也可直接拖入窗口）">＋</button>
+                <button id="gallery-toggle" title="收起/展开">‹</button>
+            </div>
+        </div>
+        <div id="gallery-list" class="gallery-list"></div>
+        <div class="gallery-tip">把图片拖到窗口任意处也可添加<br>用户图只存在你的浏览器</div>
+    </aside>
+    <input type="file" id="pano-file-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
+    <button id="gallery-open" class="gallery-open-btn" title="展开列表">☰</button>
+
+    <!-- ========== 底部控制栏 ========== -->
+    <div class="controls">
+        <button class="btn" id="btn-zoom-in" title="放大 (+)">⊕</button>
+        <button class="btn" id="btn-zoom-out" title="缩小 (-)">⊖</button>
+        <div class="sep"></div>
+        <button class="btn" id="btn-rotate" title="自动旋转">⟳</button>
+        <button class="btn" id="btn-reset" title="重置视角 (R)">⌂</button>
+        <div class="sep"></div>
+        <button class="btn" id="btn-shot" title="截图">📷</button>
+        <button class="btn" id="btn-bmsave" title="收藏当前视角">🔖+</button>
+        <div class="sep"></div>
+        <button class="btn" id="btn-gyro" title="陀螺仪">📱</button>
+        <button class="btn" id="btn-vr" title="VR 分屏">🥽</button>
+        <button class="btn" id="btn-fs" title="全屏 (F)">⛶</button>
+    </div>
+
+    <!-- ========== 提示 / Toast ========== -->
+    <div id="hint" class="hint">🖱️ 拖拽旋转 · 滚轮缩放 · 拖入图片添加全景图</div>
+    <div id="toast" class="toast"></div>
+
+    <!-- ========== 拖放上传遮罩 ========== -->
+    <div id="drop-zone" class="drop-zone">
+        <div class="drop-zone-inner">📁 释放鼠标即可添加到你的浏览器</div>
+    </div>
+
+    <!-- ========== 书签弹出菜单 ========== -->
+    <div id="popup-backdrop" class="popup-backdrop"></div>
+    <div id="bookmark-menu" class="popup hidden">
+        <div class="popup-head">视角书签<span class="popup-sub" id="bm-scene-name"></span><button class="popup-close" type="button">✕</button></div>
+        <div id="bookmark-list" class="popup-list"></div>
+        <div class="popup-empty hidden" id="bm-empty">暂无书签，用底部 🔖+ 收藏当前视角</div>
+    </div>
+
+    <!-- ========== 热点编辑面板 ========== -->
+    <div id="editor-panel" class="editor-panel hidden">
+        <div class="editor-head">编辑热点 <span id="ed-coords"></span></div>
+        <div class="editor-body">
+            <label>类型
+                <select id="ed-type">
+                    <option value="info">信息点</option>
+                    <option value="scene">跳转场景</option>
+                </select>
+            </label>
+            <label>标题 <input type="text" id="ed-title" placeholder="热点标题"></label>
+            <label id="ed-text-wrap">文字内容 <textarea id="ed-text" rows="3" placeholder="点击后显示的说明文字"></textarea></label>
+            <label id="ed-img-wrap">图片地址（可选）<input type="text" id="ed-img" placeholder="https://..."></label>
+            <label id="ed-target-wrap" class="hidden">目标场景 <select id="ed-target"></select></label>
+            <div class="editor-coords">
+                <span>方位 Yaw: <strong id="ed-yaw">0</strong>°</span>
+                <span>俯仰 Pitch: <strong id="ed-pitch">0</strong>°</span>
+            </div>
+        </div>
+        <div class="editor-foot">
+            <button class="dbtn danger" id="ed-delete">删除</button>
+            <div class="spacer"></div>
+            <button class="dbtn" id="ed-cancel">取消</button>
+            <button class="dbtn primary" id="ed-save">保存</button>
+        </div>
+    </div>
+
+    <!-- ========== 导览配置面板 ========== -->
+    <div id="tour-panel" class="popup hidden">
+        <div class="popup-head">自动导览<button class="popup-close" type="button">✕</button></div>
+        <div class="popup-list" id="tour-steps"></div>
+        <div class="tour-actions">
+            <button class="dbtn" id="tour-add">+ 加入当前场景</button>
+            <button class="dbtn primary" id="tour-play">▶ 播放导览</button>
+        </div>
+    </div>
+
+    <script src="vendor/pannellum.js"></script>
+    <script src="assets/db.js?v=2"></script>
+    <script src="assets/app.js?v=6"></script>
+    <script src="assets/editor.js?v=2"></script>
+    <script src="assets/tour.js?v=2"></script>
+    <script src="assets/vr.js?v=2"></script>
+</body>
+</html>

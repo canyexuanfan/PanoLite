@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全景图查看器 · 360° 沉浸式浏览</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body class="home">
+
+    <!-- ========== 顶部导航 ========== -->
+    <nav class="home-nav">
+        <div class="home-logo"><span class="dot"></span>全景图查看器</div>
+        <a class="home-cta-sm" href="viewer.html">打开查看器 →</a>
+    </nav>
+
+    <!-- ========== Hero ========== -->
+    <header class="home-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-inner">
+            <h1>360° 全景图<br>沉浸式查看器</h1>
+            <p class="hero-sub">拖拽漫游 · 热点标注 · 场景跳转 · 视角分享<br>你的全景图只存在你的浏览器，不上传服务器。</p>
+            <div class="hero-actions">
+                <a class="btn-primary" href="viewer.html">立即体验 →</a>
+                <a class="btn-ghost" href="#demos">浏览演示</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== 功能特性 ========== -->
+    <section class="home-features">
+        <div class="feature"><div class="feature-ico">📍</div><h3>热点标注</h3><p>在全景中放置信息点与跳转点</p></div>
+        <div class="feature"><div class="feature-ico">🎬</div><h3>自动导览</h3><p>多场景按顺序巡游播放</p></div>
+        <div class="feature"><div class="feature-ico">🔗</div><h3>视角分享</h3><p>链接直达同一画面与角度</p></div>
+        <div class="feature"><div class="feature-ico">🔒</div><h3>本地私密</h3><p>你上传的图只在你的浏览器</p></div>
+    </section>
+
+    <!-- ========== 演示网格 ========== -->
+    <section class="home-demos" id="demos">
+        <h2>演示全景 <span class="demo-count" id="demo-count">0</span></h2>
+        <p class="demos-tip">点击任意演示进入查看器，或在查看器里拖入你自己的全景图。</p>
+        <div class="demo-grid" id="demo-grid"></div>
+    </section>
+
+    <!-- ========== 隐私说明 ========== -->
+    <section class="home-privacy">
+        <div class="privacy-card">
+            <div class="privacy-ico">🔒</div>
+            <div>
+                <h3>隐私优先</h3>
+                <p>你上传的全景图、热点、书签全部存在<strong>你自己的浏览器</strong>里（IndexedDB / localStorage），不会上传到服务器，其他用户看不到，也不会影响网站。换浏览器或清缓存即清除。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="home-footer">
+        <p>基于 Pannellum · 轻量级 360° 全景查看器</p>
+    </footer>
+
+    <script src="assets/home.js?v=2"></script>
+</body>
+</html>

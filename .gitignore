@@ -1,0 +1,24 @@
+# ===== 调试 / 临时文件 =====
+_diskshot.png
+_errshot.jpg
+test.html
+test-tour.html
+
+# ===== 密钥 / 证书（切勿提交！含 SSL 私钥）=====
+panorama.hnwen17.top_nginx/
+*.key
+*.pem
+*.crt
+*.csr
+
+# ===== 运行时生成（不入库）=====
+data/
+error.log
+panoramas/.thumbs/
+
+# ===== 冗余 / 旧目录 =====
+埃菲尔铁塔/
+
+# ===== 操作系统 =====
+Thumbs.db
+.DS_Store
