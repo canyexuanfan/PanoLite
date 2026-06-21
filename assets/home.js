@@ -1,5 +1,5 @@
 /* ============================================================
- * home.js — 首页：拉取演示全景、渲染网格、跳转查看器
+ * home.js - 首页：拉取演示全景、渲染网格、跳转查看器
  * ============================================================ */
 (function () {
     'use strict';
@@ -17,6 +17,13 @@
             return;
         }
         if (countEl) countEl.textContent = demos.length;
+
+        // Hero 预览窗：填充首张演示缩略图（真实全景画面，非渐变色块）
+        const portal = document.getElementById('hero-portal');
+        if (portal && demos.length > 0) {
+            portal.style.backgroundImage = 'url(/api/thumb/' + encodeURIComponent(demos[0].id) + ')';
+        }
+
         if (!grid) return;
         if (demos.length === 0) {
             grid.innerHTML = '<p class="empty">还没有演示全景图</p>';
