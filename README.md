@@ -33,7 +33,7 @@
 需要 Python 3.8+。
 
 ```bash
-git clone https://github.com/<你的用户名>/PanoLite.git
+git clone https://github.com/canyexuanfan/PanoLite.git
 cd PanoLite
 python server.py
 ```
