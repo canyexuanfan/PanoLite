@@ -19,6 +19,10 @@ panoramas/.thumbs/
 # ===== 冗余 / 旧目录 =====
 埃菲尔铁塔/
 
+# ===== 与本项目无关的工作流文档（不入库）=====
+docs/
+questions/
+
 # ===== 操作系统 =====
 Thumbs.db
 .DS_Store
