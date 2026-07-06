@@ -26,3 +26,5 @@ questions/
 # ===== 操作系统 =====
 Thumbs.db
 .DS_Store
+
+.vercel
