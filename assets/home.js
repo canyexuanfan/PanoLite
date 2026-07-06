@@ -4,14 +4,23 @@
 (function () {
     'use strict';
 
+    async function loadDemoScenes() {
+        const res = await fetch('/assets/scenes.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load static scenes');
+        const data = await res.json();
+        return data.scenes || [];
+    }
+
+    function sceneThumb(scene) {
+        return scene.thumb || scene.file || scene.panorama || '';
+    }
+
     async function init() {
         const grid = document.getElementById('demo-grid');
         const countEl = document.getElementById('demo-count');
         let demos = [];
         try {
-            const res = await fetch('/api/scenes', { cache: 'no-store' });
-            const data = await res.json();
-            demos = data.scenes || [];
+            demos = await loadDemoScenes();
         } catch (e) {
             if (grid) grid.innerHTML = '<p class="empty">无法连接服务端，请确认 server.py 已启动</p>';
             return;
@@ -21,7 +30,7 @@
         // Hero 预览窗：填充首张演示缩略图（真实全景画面，非渐变色块）
         const portal = document.getElementById('hero-portal');
         if (portal && demos.length > 0) {
-            portal.style.backgroundImage = 'url(/api/thumb/' + encodeURIComponent(demos[0].id) + ')';
+            portal.style.backgroundImage = 'url(' + sceneThumb(demos[0]) + ')';
         }
 
         if (!grid) return;
@@ -37,8 +46,7 @@
             card.innerHTML = '<div class="demo-thumb"></div><div class="demo-name"></div><div class="demo-go">进入查看 →</div>';
             card.querySelector('.demo-name').textContent = s.title;
             // 演示图用服务端缩略图（小图，不下载全图）
-            card.querySelector('.demo-thumb').style.backgroundImage =
-                'url(/api/thumb/' + encodeURIComponent(s.id) + ')';
+            card.querySelector('.demo-thumb').style.backgroundImage = 'url(' + sceneThumb(s) + ')';
             grid.appendChild(card);
         });
     }

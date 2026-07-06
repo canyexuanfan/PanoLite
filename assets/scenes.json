@@ -1,0 +1,22 @@
+{
+  "scenes": [
+    {
+      "id": "\u516b\u8fbe\u5cad\u957f\u57ce",
+      "title": "\u516b\u8fbe\u5cad\u957f\u57ce",
+      "file": "/panoramas/%E5%85%AB%E8%BE%BE%E5%B2%AD%E9%95%BF%E5%9F%8E.png",
+      "thumb": "/panoramas/%E5%85%AB%E8%BE%BE%E5%B2%AD%E9%95%BF%E5%9F%8E.png"
+    },
+    {
+      "id": "\u5723\u7d22\u83f2\u4e9a\u5927\u6559\u5802",
+      "title": "\u5723\u7d22\u83f2\u4e9a\u5927\u6559\u5802",
+      "file": "/panoramas/%E5%9C%A3%E7%B4%A2%E8%8F%B2%E4%BA%9A%E5%A4%A7%E6%95%99%E5%A0%82.jpg",
+      "thumb": "/panoramas/%E5%9C%A3%E7%B4%A2%E8%8F%B2%E4%BA%9A%E5%A4%A7%E6%95%99%E5%A0%82.jpg"
+    },
+    {
+      "id": "\u57c3\u83f2\u5c14\u94c1\u5854",
+      "title": "\u57c3\u83f2\u5c14\u94c1\u5854",
+      "file": "/panoramas/%E5%9F%83%E8%8F%B2%E5%B0%94%E9%93%81%E5%A1%94.png",
+      "thumb": "/panoramas/%E5%9F%83%E8%8F%B2%E5%B0%94%E9%93%81%E5%A1%94.png"
+    }
+  ]
+}

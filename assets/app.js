@@ -22,11 +22,7 @@
         box.textContent = '【渲染异常 · 请截图】\n\n' + msg;
         // 上报到服务器日志（便于诊断手机端问题）
         try {
-            fetch('/api/errorlog', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ua: navigator.userAgent, msg: msg }),
-            });
+            console.warn('[PanoApp static errorlog]', { ua: navigator.userAgent, msg: msg });
         } catch (_) {}
     });
 
@@ -79,17 +75,24 @@
     };
 
     // -------------------- 取数（演示图来自服务器 + 用户图来自 IndexedDB）--------------------
+    async function loadDemoScenes() {
+        const res = await fetch('/assets/scenes.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load static scenes');
+        const data = await res.json();
+        return data.scenes || [];
+    }
+
     async function fetchScenes() {
         // 1. 演示图（服务器只读目录）
         let demos = [];
         try {
-            const res = await fetch('/api/scenes', { cache: 'no-store' });
-            if (res.ok) {
-                const data = await res.json();
-                demos = (data.scenes || []).map(s => ({
-                    id: s.id, title: s.title, panorama: s.file, isUser: false,
-                }));
-            }
+            demos = (await loadDemoScenes()).map(s => ({
+                id: s.id,
+                title: s.title,
+                panorama: s.file,
+                thumb: s.thumb || s.file,
+                isUser: false,
+            }));
         } catch (e) { /* 服务器不可达时仅用本地 */ }
 
         // 2. 用户图（IndexedDB，只在本浏览器）
@@ -333,7 +336,7 @@
             }
             list.appendChild(item);
             // 缩略图：演示图用服务端小图（不下载全图），用户图用本地 blob
-            const thumbUrl = s.isUser ? s.panorama : ('/api/thumb/' + encodeURIComponent(s.id));
+            const thumbUrl = s.isUser ? s.panorama : (s.thumb || s.panorama);
             item.querySelector('.scene-thumb').style.backgroundImage = 'url(' + thumbUrl + ')';
         });
     }
@@ -557,7 +560,7 @@
         // 同步 viewer 内部场景配置，使切场景再回来时也用新初始视角
         try {
             PanoApp.viewer.addScene(PanoApp.currentScene, {
-                panorama: s.file,
+                panorama: s.panorama,
                 yaw: s.initialView.yaw,
                 pitch: s.initialView.pitch,
                 hfov: s.initialView.hfov,
